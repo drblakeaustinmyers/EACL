@@ -445,35 +445,3 @@ To ensure a smooth user experience and efficient operation of the EACL platform,
 7. Content Delivery Network (CDN): Use a CDN to serve static assets and improve global access speeds.
 
 8. Database Optimization: If using a traditional database alongside the blockchain, optimize queries and indexing.
-
-## Contributing
-
-We welcome contributions from the community! If you'd like to contribute to the EACL project, please follow these steps:
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-Please read our [CONTRIBUTING.md](CONTRIBUTING.md) file for detailed information on our code of conduct, and the process for submitting pull requests.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Contact
-
-For any questions or concerns, please reach out to us at:
-
-Email: support@eaclplatform.com
-Twitter: @EACLPlatform
-Telegram: t.me/EACLCommunity
-
-## Acknowledgments
-
-- OpenZeppelin for their secure smart contract libraries
-- Truffle Suite for their development tools
-- The Ethereum and Binance Smart Chain communities for their invaluable resources and support
-
-Thank you for your interest in the Estate Auction House (EACL) platform. We're excited to revolutionize the real estate market with blockchain technology and look forward to your contributions and feedback!
