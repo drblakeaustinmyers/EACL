@@ -12,7 +12,8 @@
 9. [Deployment](#deployment)
 10. [Future Enhancements](#future-enhancements)
 11. [Security Considerations](#security-considerations)
-
+12. [Compliance and Legal Considerations](#compliance-and-legal-considerations)
+    
 ## Executive Summary
 
 Estate Auction House (EACL) is a cutting-edge, Web3-enabled real estate blockchain ecosystem designed to revolutionize the purchase and sale of commercial and residential properties. Initially developed on the Binance Smart Chain, EACL aims to dominate the global real estate market through its decentralized platform, which maximizes seller returns and expands buyer options using an innovative auction model.
