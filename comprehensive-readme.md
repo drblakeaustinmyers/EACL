@@ -9,8 +9,9 @@
 6. [Backend](#backend)
 7. [Setup Instructions](#setup-instructions)
 8. [Testing](#testing)
-5. [Deployment](#deployment)
-6. [Future Enhancements](#future-enhancements)
+9. [Deployment](#deployment)
+10. [Future Enhancements](#future-enhancements)
+11. [Security Considerations](#security-considerations)
 
 ## Executive Summary
 
