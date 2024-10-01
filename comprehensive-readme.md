@@ -57,8 +57,13 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
+// Interface for BEP20 token
+interface IBEP20 is IERC20 {
+    function decimals() external view returns (uint8);
+}
+
 contract EACLAuction is ReentrancyGuard {
-    IERC20 public eaclToken;
+    IBEP20 public eaclToken;
     
     struct Auction {
         uint256 propertyId;
@@ -78,11 +83,12 @@ contract EACLAuction is ReentrancyGuard {
     event AuctionEnded(uint256 indexed propertyId, address winner, uint256 amount);
     
     constructor(address _eaclTokenAddress) {
-        eaclToken = IERC20(_eaclTokenAddress);
+        eaclToken = IBEP20(_eaclTokenAddress);
     }
     
     function createAuction(uint256 _propertyId, uint256 _startingPrice, uint256 _duration) external {
-        require(eaclToken.transferFrom(msg.sender, address(this), 100 * 10**18), "Failed to transfer listing fee");
+        uint256 listingFee = 100 * 10**eaclToken.decimals();
+        require(eaclToken.transferFrom(msg.sender, address(this), listingFee), "Failed to transfer listing fee");
         
         auctions[_propertyId] = Auction({
             propertyId: _propertyId,
