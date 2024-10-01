@@ -459,3 +459,13 @@ Access the application at `http://localhost:3000`.
 - **UI/UX Enhancements**: The current front-end is a basic prototype. Consider improving the user interface.
 - **Integration with Oracles**: Future iterations should include integration with property data sources like Zillow and LoopNet.
 - **Legal Compliance**: Ensure all legal requirements for real estate transactions are met.
+
+---
+
+## License
+
+This project is licensed under the MIT License.
+
+---
+
+*End of README*
