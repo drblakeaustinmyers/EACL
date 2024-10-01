@@ -1,471 +1,528 @@
-# Estate Auction House (EACL) - Project Overview and Setup Guide
+Estate Auction House (EACL) Platform Development Guide
+Table of Contents
+Executive Summary
+Project Overview
+Technical Requirements
+Project Structure
+Smart Contracts Development
+EACLToken Contract
+AuctionHouse Contract
+Frontend Development
+ReactJS Setup
+Integrating Smart Contracts
+Deployment and Testing
+Binance Smart Chain Testnet Deployment
+Running the Frontend Application
+README Files and Documentation
+Next Steps and Recommendations
+Copying and Pasting Instructions
+Executive Summary
+Estate Auction House (EACL) is an innovative, decentralized real estate auction platform built on blockchain technology. Aimed at transforming the traditional real estate market, EACL leverages the Binance Smart Chain to facilitate secure, transparent, and efficient property transactions. The platform introduces a unique auction model where buyers place one-time silent bids, ensuring sellers receive the highest possible offers while expanding options for buyers globally.
 
-*Instructions for the Lead Programmer*
+Key features include:
 
----
+EACLToken: A BEP20 token used for transactions within the ecosystem.
+Silent Auctions: Buyers must hold 10% of the property's value in EACL tokens to place a bid.
+Seller Protections: Non-refundable deposits and penalties safeguard sellers against non-completion.
+Low Listing Fees: Sellers can list properties with only $100 worth of EACL tokens.
+Global Reach: The platform taps into both domestic and international markets, often yielding 20-30% premiums for sellers.
+Oracle Integration: Incorporates data from Zillow and LoopNet for accurate property valuations.
+Project Overview
+The goal is to develop a prototype of the EACL platform that includes:
 
-## Introduction
+Smart Contracts: Implementing the EACLToken and AuctionHouse contracts using Solidity.
+Frontend Application: Building a ReactJS application that interacts with the smart contracts.
+Test Network Deployment: Deploying contracts on the Binance Smart Chain Testnet for testing purposes.
+This prototype will serve as a starting point for further development and provide a foundation for your programming team to build upon.
 
-Estate Auction House (EACL) is a decentralized platform designed to revolutionize real estate auctions by leveraging blockchain technology. This document provides all the necessary code, instructions, and guidelines to set up the project, including smart contracts, front-end integration, and deployment steps.
+Technical Requirements
+Prerequisites
+Node.js and npm: Ensure Node.js (v14 or above) and npm are installed.
+Truffle or Hardhat: For smart contract development and deployment.
+MetaMask: Browser extension for managing blockchain accounts.
+Git: For version control.
+IDE/Text Editor: Such as Visual Studio Code or Sublime Text.
+Technologies Used
+Blockchain Network: Binance Smart Chain (BSC) Testnet.
+Smart Contracts Language: Solidity.
+Frontend Framework: ReactJS.
+Token Standard: BEP20 (similar to ERC20).
+Project Structure
+java
+Copy code
+EACL-Platform/
+├── contracts/
+│   ├── EACLToken.sol
+│   ├── AuctionHouse.sol
+│   └── Migrations.sol
+├── migrations/
+│   ├── 1_initial_migration.js
+│   └── 2_deploy_contracts.js
+├── frontend/
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── PropertyList.js
+│   │   │   ├── PropertyDetails.js
+│   │   │   └── BidForm.js
+│   │   ├── App.js
+│   │   ├── index.js
+│   │   └── contracts/
+│   │       ├── EACLToken.json
+│   │       └── AuctionHouse.json
+│   ├── public/
+│   └── package.json
+├── test/
+│   ├── EACLToken.test.js
+│   └── AuctionHouse.test.js
+├── truffle-config.js
+├── package.json
+└── README.md
+Smart Contracts Development
+1. Setting Up the Development Environment
+Initialize the Truffle Project
 
----
+bash
+Copy code
+mkdir EACL-Platform
+cd EACL-Platform
+truffle init
+Install Dependencies
 
-## Table of Contents
+bash
+Copy code
+npm init -y
+npm install @openzeppelin/contracts
+2. EACLToken Contract
+This contract represents the BEP20 token used within the platform. It inherits from OpenZeppelin's ERC20 implementation.
 
-1. Technologies Used
-2. Project Structure
-3. Setup Instructions
-   - Prerequisites
-   - Project Initialization
-4. Smart Contracts
-   - EACLToken.sol
-   - AuctionHouse.sol
-   - Deployment Script
-5. Front-End Application
-   - WalletConnector.js
-   - ContractInteraction.js
-   - App.js
-6. Deployment and Testing
-7. Additional Notes
-8. License
+File: contracts/EACLToken.sol
 
----
-
-## Technologies Used
-
-- **Blockchain Platform**: Binance Smart Chain (BSC) Testnet
-- **Smart Contract Language**: Solidity (version ^0.8.0)
-- **Front-End Framework**: React.js
-- **Blockchain Interaction**: Ethers.js
-- **Development Environment**: Hardhat
-- **Wallet Integration**: MetaMask
-- **Node.js and NPM**: For package management
-- **Version Control**: Git and GitHub
-
----
-
-## Project Structure
-
-EACL/
-  - frontend/
-    - src/
-      - components/
-        - WalletConnector.js
-        - ContractInteraction.js
-      - App.js
-      - index.js
-    - package.json
-    - ...
-  - smart-contracts/
-    - contracts/
-      - EACLToken.sol
-      - AuctionHouse.sol
-    - scripts/
-      - deploy.js
-    - hardhat.config.js
-    - package.json
-    - ...
-  - README.md
-
----
-
-## Setup Instructions
-
-### Prerequisites
-
-- **Node.js and NPM**: Install from the Node.js Official Website.
-- **Git**: Install from the Git Official Website.
-- **MetaMask**: Install the browser extension from the MetaMask Website.
-- **Binance Smart Chain Testnet Account**: Set up an account and obtain testnet BNB.
-- **Hardhat**: For smart contract development.
-
-### Project Initialization
-
-1. **Clone the Repository**
-
-   git clone https://github.com/yourusername/EACL.git
-   cd EACL
-
-2. **Initialize Git (if not already initialized)**
-
-   git init
-
-3. **Create Project Directories**
-
-   mkdir smart-contracts
-   mkdir frontend
-
----
-
-## Smart Contracts
-
-Navigate to the `smart-contracts` directory to set up the smart contracts.
-
-   cd smart-contracts
-
-Initialize a Node.js project:
-
-   npm init -y
-
-Install Hardhat and dependencies:
-
-   npm install --save-dev hardhat @nomiclabs/hardhat-ethers ethers dotenv
-   npm install @openzeppelin/contracts
-
-Initialize Hardhat:
-
-   npx hardhat
-
-Select "Create an empty hardhat.config.js" and follow the prompts.
-
-### EACLToken.sol
-
-Create `contracts/EACLToken.sol` with the following content:
-
+solidity
+Copy code
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 contract EACLToken is ERC20 {
-    constructor(uint256 initialSupply) ERC20("Estate Auction House Token", "EACL") {
-        _mint(msg.sender, initialSupply);
+    constructor(uint256 initialSupply) ERC20("Estate Auction Coin", "EACL") {
+        _mint(msg.sender, initialSupply * (10 ** decimals()));
     }
 }
+Key Features:
 
-### AuctionHouse.sol
+Token Name: Estate Auction Coin
+Symbol: EACL
+Initial Supply: Set during deployment.
+3. AuctionHouse Contract
+Handles property listings, bidding processes, and transaction settlements.
 
-Create `contracts/AuctionHouse.sol` with the following content:
+File: contracts/AuctionHouse.sol
 
+solidity
+Copy code
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
 import "./EACLToken.sol";
 
 contract AuctionHouse {
+    EACLToken public eaclToken;
+
+    uint256 public propertyCount = 0;
+
     struct Property {
         uint256 id;
         address payable seller;
-        uint256 minPrice;
         string details;
-        bool isSold;
+        uint256 minPrice;
+        bool sold;
     }
 
     struct Bid {
-        address bidder;
+        address payable bidder;
         uint256 amount;
+        bool accepted;
     }
 
-    EACLToken public token;
-    uint256 public propertyCount;
     mapping(uint256 => Property) public properties;
-    mapping(uint256 => Bid[]) public bids;
+    mapping(uint256 => Bid[]) public propertyBids;
 
-    event PropertyListed(uint256 id, address seller, uint256 minPrice, string details);
+    event PropertyListed(uint256 id, address seller, uint256 minPrice);
     event BidPlaced(uint256 propertyId, address bidder, uint256 amount);
-    event PropertySold(uint256 propertyId, address buyer, uint256 amount);
+    event BidAccepted(uint256 propertyId, address seller, address bidder, uint256 amount);
+    event BidderPenalized(uint256 propertyId, address bidder, uint256 penaltyAmount);
 
-    constructor(EACLToken _token) {
-        token = _token;
+    constructor(EACLToken _eaclToken) {
+        eaclToken = _eaclToken;
     }
 
-    function listProperty(uint256 minPrice, string memory details) public {
-        require(token.balanceOf(msg.sender) >= 100 * (10 ** 18), "Need $100 worth of EACL tokens to list");
+    // Function to list a property
+    function listProperty(string memory _details, uint256 _minPrice) public {
+        require(
+            eaclToken.balanceOf(msg.sender) >= 100 * (10 ** eaclToken.decimals()),
+            "You need $100 worth of EACL tokens to list a property."
+        );
 
         propertyCount++;
-        properties[propertyCount] = Property({
-            id: propertyCount,
-            seller: payable(msg.sender),
-            minPrice: minPrice,
-            details: details,
-            isSold: false
-        });
+        properties[propertyCount] = Property(
+            propertyCount,
+            payable(msg.sender),
+            _details,
+            _minPrice,
+            false
+        );
 
-        emit PropertyListed(propertyCount, msg.sender, minPrice, details);
+        emit PropertyListed(propertyCount, msg.sender, _minPrice);
     }
 
-    function placeBid(uint256 propertyId, uint256 bidAmount) public {
-        Property storage property = properties[propertyId];
-        require(!property.isSold, "Property already sold");
-        require(bidAmount >= property.minPrice, "Bid amount too low");
-        require(token.balanceOf(msg.sender) >= bidAmount / 10, "Need 10% of bid in EACL tokens");
+    // Function to place a bid
+    function placeBid(uint256 _propertyId, uint256 _bidAmount) public {
+        Property storage property = properties[_propertyId];
+        require(!property.sold, "Property already sold.");
+        require(
+            eaclToken.balanceOf(msg.sender) >= (_bidAmount * 10) / 100,
+            "You must hold 10% of the bid amount in EACL tokens."
+        );
 
-        bids[propertyId].push(Bid({
-            bidder: msg.sender,
-            amount: bidAmount
-        }));
+        propertyBids[_propertyId].push(
+            Bid(payable(msg.sender), _bidAmount, false)
+        );
 
-        emit BidPlaced(propertyId, msg.sender, bidAmount);
+        emit BidPlaced(_propertyId, msg.sender, _bidAmount);
     }
 
-    function acceptBid(uint256 propertyId, uint256 bidIndex) public {
-        Property storage property = properties[propertyId];
-        require(msg.sender == property.seller, "Only seller can accept bids");
-        require(!property.isSold, "Property already sold");
+    // Function to accept a bid
+    function acceptBid(uint256 _propertyId, uint256 _bidIndex) public {
+        Property storage property = properties[_propertyId];
+        require(msg.sender == property.seller, "Only the seller can accept bids.");
+        require(!property.sold, "Property already sold.");
 
-        Bid storage winningBid = bids[propertyId][bidIndex];
+        Bid storage bid = propertyBids[_propertyId][_bidIndex];
+        require(!bid.accepted, "Bid already accepted.");
 
-        // Transfer tokens as per the business logic
-        uint256 sellerProceeds = winningBid.amount * 97 / 100; // 3% commission
-        uint256 commission = winningBid.amount - sellerProceeds;
+        // Transfer 3% commission from buyer to platform
+        uint256 commission = (bid.amount * 3) / 100;
+        eaclToken.transferFrom(bid.bidder, address(this), commission);
 
-        // Implement token transfers here...
+        // Transfer remaining amount to seller
+        uint256 sellerAmount = bid.amount - commission;
+        eaclToken.transferFrom(bid.bidder, property.seller, sellerAmount);
 
-        property.isSold = true;
+        bid.accepted = true;
+        property.sold = true;
 
-        emit PropertySold(propertyId, winningBid.bidder, winningBid.amount);
+        emit BidAccepted(_propertyId, property.seller, bid.bidder, bid.amount);
+    }
+
+    // Function to penalize a bidder who fails to complete the transaction
+    function penalizeBidder(uint256 _propertyId, uint256 _bidIndex) public {
+        Property storage property = properties[_propertyId];
+        require(msg.sender == property.seller, "Only the seller can penalize.");
+        require(!property.sold, "Property already sold.");
+
+        Bid storage bid = propertyBids[_propertyId][_bidIndex];
+        require(!bid.accepted, "Bid already accepted.");
+
+        // Calculate 2% penalty
+        uint256 penaltyAmount = (bid.amount * 2) / 100;
+        eaclToken.transferFrom(bid.bidder, property.seller, penaltyAmount);
+
+        // Remove the bid
+        delete propertyBids[_propertyId][_bidIndex];
+
+        emit BidderPenalized(_propertyId, bid.bidder, penaltyAmount);
     }
 }
+Key Features:
 
-### Deployment Script
+Property Listing: Sellers can list properties by staking $100 worth of EACL tokens.
+Bidding Mechanism: Buyers place bids and must hold 10% of the bid amount in EACL tokens.
+Bid Acceptance: Sellers can accept bids, triggering token transfers and commission deductions.
+Penalties: Sellers can penalize bidders who fail to complete transactions.
+Frontend Development
+1. ReactJS Setup
+Initialize the React App
 
-Create `scripts/deploy.js` with the following content:
+bash
+Copy code
+cd EACL-Platform
+npx create-react-app frontend
+Install Dependencies
 
-const hre = require("hardhat");
-
-async function main() {
-  // Deploy EACLToken
-  const EACLToken = await hre.ethers.getContractFactory("EACLToken");
-  const eaclToken = await EACLToken.deploy(ethers.utils.parseEther("1000000")); // 1,000,000 tokens
-  await eaclToken.deployed();
-  console.log("EACLToken deployed to:", eaclToken.address);
-
-  // Deploy AuctionHouse
-  const AuctionHouse = await hre.ethers.getContractFactory("AuctionHouse");
-  const auctionHouse = await AuctionHouse.deploy(eaclToken.address);
-  await auctionHouse.deployed();
-  console.log("AuctionHouse deployed to:", auctionHouse.address);
-}
-
-main()
-  .then(() => process.exit(0))
-  .catch((error) => {
-    console.error(error);
-    process.exit(1);
-  });
-
-### Configuration
-
-Update `hardhat.config.js`:
-
-require("@nomiclabs/hardhat-ethers");
-require("dotenv").config();
-
-module.exports = {
-  defaultNetwork: "bsctestnet",
-  networks: {
-    hardhat: {},
-    bsctestnet: {
-      url: "https://data-seed-prebsc-1-s1.binance.org:8545/",
-      accounts: [`0x${process.env.PRIVATE_KEY}`]
-    },
-  },
-  solidity: "0.8.0",
-};
-
-Create a `.env` file in the `smart-contracts` directory and add your private key:
-
-PRIVATE_KEY=your_private_key_here
-
-**Important:** Ensure `.env` is added to `.gitignore` to prevent sensitive information from being committed.
-
----
-
-## Front-End Application
-
-Navigate to the `frontend` directory:
-
-cd ../frontend
-
-Initialize a React app:
-
-npx create-react-app .
-
-Install necessary dependencies:
-
-npm install ethers react-router-dom dotenv
-
-### Project Structure
-
+bash
+Copy code
+cd frontend
+npm install web3 @openzeppelin/contracts react-router-dom
+2. Project Structure
+java
+Copy code
 frontend/
-  - src/
-    - components/
-      - WalletConnector.js
-      - ContractInteraction.js
-    - App.js
-    - index.js
-  - package.json
-  - ...
+├── src/
+│   ├── components/
+│   │   ├── Navbar.js
+│   │   ├── PropertyList.js
+│   │   ├── PropertyDetails.js
+│   │   ├── ListProperty.js
+│   │   └── BidForm.js
+│   ├── App.js
+│   ├── index.js
+│   └── contracts/
+│       ├── EACLToken.json
+│       └── AuctionHouse.json
+├── public/
+├── package.json
+3. Integrating Smart Contracts
+Note: After deploying your contracts, copy the EACLToken.json and AuctionHouse.json files generated by Truffle into the frontend/src/contracts/ directory.
 
-### WalletConnector.js
+File: frontend/src/App.js
 
-Create `src/components/WalletConnector.js`:
+jsx
+Copy code
+import React, { useEffect, useState } from 'react';
+import Web3 from 'web3';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import AuctionHouseContract from './contracts/AuctionHouse.json';
+import EACLTokenContract from './contracts/EACLToken.json';
+import Navbar from './components/Navbar';
+import PropertyList from './components/PropertyList';
+import PropertyDetails from './components/PropertyDetails';
+import ListProperty from './components/ListProperty';
 
-import React, { useState } from 'react';
-import { ethers } from 'ethers';
+function App() {
+  const [account, setAccount] = useState('');
+  const [auctionHouse, setAuctionHouse] = useState(null);
+  const [eaclToken, setEaclToken] = useState(null);
+  const [properties, setProperties] = useState([]);
 
-function WalletConnector() {
-  const [address, setAddress] = useState(null);
+  useEffect(() => {
+    loadBlockchainData();
+  }, []);
 
-  const connectWallet = async () => {
+  const loadBlockchainData = async () => {
     if (window.ethereum) {
-      try {
-        await window.ethereum.request({ method: 'eth_requestAccounts' });
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        const signer = provider.getSigner();
-        setAddress(await signer.getAddress());
-      } catch (error) {
-        console.error("User rejected request");
-      }
+      window.web3 = new Web3(window.ethereum);
+      await window.ethereum.request({ method: 'eth_requestAccounts' });
     } else {
-      alert("MetaMask not detected");
+      window.alert('Please install MetaMask!');
+      return;
+    }
+
+    const web3 = window.web3;
+    const accounts = await web3.eth.getAccounts();
+    setAccount(accounts[0]);
+
+    const networkId = await web3.eth.net.getId();
+
+    // Load AuctionHouse Contract
+    const auctionHouseData = AuctionHouseContract.networks[networkId];
+    if (auctionHouseData) {
+      const auctionHouseInstance = new web3.eth.Contract(
+        AuctionHouseContract.abi,
+        auctionHouseData.address
+      );
+      setAuctionHouse(auctionHouseInstance);
+
+      // Load Properties
+      const propertyCount = await auctionHouseInstance.methods.propertyCount().call();
+      const loadedProperties = [];
+      for (let i = 1; i <= propertyCount; i++) {
+        const property = await auctionHouseInstance.methods.properties(i).call();
+        loadedProperties.push(property);
+      }
+      setProperties(loadedProperties);
+    } else {
+      window.alert('AuctionHouse contract not deployed to detected network.');
+    }
+
+    // Load EACLToken Contract
+    const eaclTokenData = EACLTokenContract.networks[networkId];
+    if (eaclTokenData) {
+      const eaclTokenInstance = new web3.eth.Contract(
+        EACLTokenContract.abi,
+        eaclTokenData.address
+      );
+      setEaclToken(eaclTokenInstance);
+    } else {
+      window.alert('EACLToken contract not deployed to detected network.');
     }
   };
 
   return (
-    <div>
-      {address ? (
-        <p>Connected: {address}</p>
-      ) : (
-        <button onClick={connectWallet}>Connect MetaMask</button>
-      )}
-    </div>
-  );
-}
-
-export default WalletConnector;
-
-### ContractInteraction.js
-
-Create `src/components/ContractInteraction.js`:
-
-import React, { useEffect, useState } from 'react';
-import { ethers } from 'ethers';
-import AuctionHouse from '../artifacts/contracts/AuctionHouse.sol/AuctionHouse.json';
-
-function ContractInteraction() {
-  const [auctionHouse, setAuctionHouse] = useState(null);
-  const [properties, setProperties] = useState([]);
-
-  useEffect(() => {
-    const init = async () => {
-      if (window.ethereum) {
-        const address = "YOUR_AUCTION_HOUSE_CONTRACT_ADDRESS"; // Replace with your deployed contract address
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        const contract = new ethers.Contract(address, AuctionHouse.abi, provider);
-        setAuctionHouse(contract);
-
-        // Fetch properties
-        const propertyCount = await contract.propertyCount();
-        const props = [];
-        for (let i = 1; i <= propertyCount; i++) {
-          const property = await contract.properties(i);
-          props.push(property);
-        }
-        setProperties(props);
-      }
-    };
-    init();
-  }, []);
-
-  return (
-    <div>
-      <h2>Properties</h2>
-      {properties.map((property, index) => (
-        <div key={index}>
-          <p>ID: {property.id.toString()}</p>
-          <p>Seller: {property.seller}</p>
-          <p>Min Price: {ethers.utils.formatEther(property.minPrice)} EACL</p>
-          <p>Details: {property.details}</p>
-          <p>Is Sold: {property.isSold ? 'Yes' : 'No'}</p>
-        </div>
-      ))}
-    </div>
-  );
-}
-
-export default ContractInteraction;
-
-### App.js
-
-Update `src/App.js`:
-
-import React from 'react';
-import WalletConnector from './components/WalletConnector';
-import ContractInteraction from './components/ContractInteraction';
-
-function App() {
-  return (
-    <div>
-      <h1>Estate Auction House (EACL)</h1>
-      <WalletConnector />
-      <ContractInteraction />
-    </div>
+    <Router>
+      <div>
+        <Navbar account={account} />
+        <Routes>
+          <Route
+            path="/"
+            element={<PropertyList properties={properties} />}
+          />
+          <Route
+            path="/property/:id"
+            element={<PropertyDetails properties={properties} />}
+          />
+          <Route
+            path="/list-property"
+            element={<ListProperty auctionHouse={auctionHouse} account={account} />}
+          />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
 export default App;
+Component Breakdown:
 
----
+Navbar: Displays navigation links and the user's account.
+PropertyList: Shows a list of available properties.
+PropertyDetails: Displays details of a selected property and allows bidding.
+ListProperty: Form for sellers to list new properties.
+Deployment and Testing
+1. Binance Smart Chain Testnet Deployment
+Configure Truffle for BSC Testnet
 
-## Deployment and Testing
+Install HDWalletProvider
 
-### Compile and Deploy Smart Contracts
+bash
+Copy code
+npm install @truffle/hdwallet-provider
+File: truffle-config.js
 
-Navigate to the `smart-contracts` directory:
+javascript
+Copy code
+const HDWalletProvider = require('@truffle/hdwallet-provider');
+const mnemonic = 'your mnemonic here'; // Replace with your wallet's mnemonic
 
-cd ../smart-contracts
+module.exports = {
+  networks: {
+    bscTestnet: {
+      provider: () =>
+        new HDWalletProvider(
+          mnemonic,
+          'https://data-seed-prebsc-1-s1.binance.org:8545/'
+        ),
+      network_id: 97,
+      confirmations: 10,
+      timeoutBlocks: 200,
+      skipDryRun: true,
+    },
+  },
+  compilers: {
+    solc: {
+      version: '0.8.0',
+    },
+  },
+};
+Deploy Contracts
 
-Compile the contracts:
+bash
+Copy code
+truffle migrate --network bscTestnet
+2. Running the Frontend Application
+Start the React App
 
-npx hardhat compile
-
-Deploy the contracts to the BSC testnet:
-
-npx hardhat run scripts/deploy.js --network bsctestnet
-
-**Note:** Ensure you have testnet BNB in your account for gas fees.
-
-Record the deployed contract addresses. You'll need them for the front-end.
-
-### Update Front-End with Contract Addresses
-
-In `src/components/ContractInteraction.js`, replace `"YOUR_AUCTION_HOUSE_CONTRACT_ADDRESS"` with the actual address of the deployed `AuctionHouse` contract.
-
-### Copy Contract Artifacts to Front-End
-
-After compiling the contracts, copy the `artifacts` directory to the front-end `src` directory:
-
-cp -r artifacts ../frontend/src/
-
-### Run the Front-End Application
-
-Navigate to the `frontend` directory:
-
-cd ../frontend
-
-Start the development server:
-
+bash
+Copy code
+cd frontend
 npm start
+Connect MetaMask to BSC Testnet
 
-Access the application at `http://localhost:3000`.
+Open MetaMask.
+Click on the network dropdown and select "Custom RPC".
+Enter the following details:
+Network Name: BSC Testnet
+New RPC URL: https://data-seed-prebsc-1-s1.binance.org:8545/
+Chain ID: 97
+Currency Symbol: BNB
+Block Explorer URL: https://testnet.bscscan.com
+Import Test EACL Tokens
 
----
+In MetaMask, add the EACLToken contract address to view token balances.
+Click on "Import Tokens" and enter the contract address.
+README Files and Documentation
+Root README.md
+File: README.md
 
-## Additional Notes
+markdown
+Copy code
+# Estate Auction House (EACL) Platform
 
-- **Security Considerations**: Before deploying to the mainnet, perform a thorough security audit of the smart contracts.
-- **Testing**: Implement unit tests for both smart contracts and front-end components.
-- **UI/UX Enhancements**: The current front-end is a basic prototype. Consider improving the user interface.
-- **Integration with Oracles**: Future iterations should include integration with property data sources like Zillow and LoopNet.
-- **Legal Compliance**: Ensure all legal requirements for real estate transactions are met.
+A decentralized real estate auction platform built on the Binance Smart Chain Testnet.
 
----
+## Overview
 
-## License
+Estate Auction House (EACL) is a blockchain-based platform aiming to revolutionize real estate transactions by leveraging decentralized technologies.
 
-This project is licensed under the MIT License.
+## Features
 
----
+- Property Listings and Auctions
+- Secure Bidding Mechanism
+- Integration with EACLToken (BEP20)
+- Penalty Enforcement for Non-Completion
+- Oracle Integration for Property Data (Future Implementation)
 
-*End of README*
+## Getting Started
+
+### Prerequisites
+
+- Node.js (v14 or above)
+- npm
+- Truffle
+- MetaMask Extension
+- Git
+
+### Installation
+
+1. **Clone the Repository**
+
+   ```bash
+   git clone <repository_url>
+Install Backend Dependencies
+
+bash
+Copy code
+cd EACL-Platform
+npm install
+Install Frontend Dependencies
+
+bash
+Copy code
+cd frontend
+npm install
+Deployment
+Compile Smart Contracts
+
+bash
+Copy code
+truffle compile
+Deploy to BSC Testnet
+
+bash
+Copy code
+truffle migrate --network bscTestnet
+Running the Application
+Start the Frontend
+
+bash
+Copy code
+cd frontend
+npm start
+Open in Browser
+
+Navigate to http://localhost:3000 in your web browser.
+
+Testing
+Smart Contract Tests
+
+bash
+Copy code
+truffle test
+Next Steps and Recommendations
+Implement Silent Auction Logic: Modify the auction contract to handle one-time silent bids.
+Enforce 72-Hour Completion Window: Add functionality to enforce the 72-hour transaction completion requirement.
+Integrate Oracles for Property Data: Use Chainlink or similar services to fetch external property data.
+Enhance UI/UX: Improve the frontend design for better user experience.
+Security Audits: Conduct comprehensive security audits of the smart contracts.
+Expand Testing: Write additional tests to cover edge cases and ensure robustness.
+Documentation: Create detailed documentation for developers and end-users.
